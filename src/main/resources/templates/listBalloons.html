@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <div th:if="${#request.getRemoteUser()!=null}">
+        Hi, <span><th:block th:text="${#request.getRemoteUser()}"/></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${#request.getRemoteUser()==null}">
+        <a href="/login">Login</a>
+    </div>
+    <title>Balloon Order page - Welcome and choose a Balloon</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Balloon Shop App</h1>
+</header>
+<main>
+    <a href="/manufacturers">List of manufacturers</a><br>
+    <div th:if="${hasError}">
+        <div style="color: red" th:text="${error}"></div>
+    </div>
+    <br>
+    <div th:if="${typeErrorSort}">
+        <div style="color: red" th:text="${typeErrorMessage}"></div>
+    </div>
+    <br>
+    <a href="/balloons">Refresh page</a>
+    <br>
+    <h2>These are all the ballons we have in our shop</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Manufacturer</th>
+            <th>Type</th>
+            <th th:if="${#request.getRemoteUser()!=null}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="balloon" th:each="balloon: ${balloonList}">
+            <td>
+                <th:block th:text="${balloon.getName()}"/>
+            </td>
+            <td>
+                <th:block th:text="${balloon.getDescription()}"/>
+            </td>
+            <td>
+                <th:block th:text="${balloon.getManufacturer().getName()}"/>
+            </td>
+            <td>
+                <th:block th:text="${balloon.getType().toString()}"/>
+            </td>
+            <td th:if="${#request.getRemoteUser()!=null}">
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <form th:method="GET" th:action="@{'/balloons/edit-form/{id}' (id=${balloon.getId()})}">
+                        <button class="edit-balloon" style="background-color: blue" type="submit">Edit</button>
+                    </form>
+                    <form th:method="POST" th:action="@{'/balloons/delete/{id}' (id=${balloon.getId()})}">
+                        <button class="delete-balloon" style="background-color: red" type="submit">Delete</button>
+                    </form>
+                </th:block>
+                <form th:method="POST" th:action="@{'/balloons/add-to-order/{id}' (id=${balloon.getId()})}">
+                    <button class="order-balloon" type="submit" style="background-color: aqua">Add to Order</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="add-balloon-btn" href="/balloons/add-balloon">Add new balloon</a> <br>
+    </th:block>
+    <br>
+    <hr>
+    <br>
+    <h3>Filter By the Type of the balloon</h3>
+    <form th:method="POST" th:action="@{'/balloons/filter'}">
+        <select name="type" id="type">
+            <option th:each="t : ${type}"
+                    th:value="${t.toString()}"
+                    th:text="${t.toString()}">
+            </option>
+        </select> <br> <br>
+        <div>
+            <button type="submit" th:value="Submit">Filter</button>
+        </div>
+    </form>
+    <br>
+    <hr>
+    <h3>Search for some balloons by any attribute</h3>
+    <form th:method="POST" th:action="@{'/balloons/search'}">
+        <input type="text" name="resultBallons"/> <br><br>
+        <div>
+            <button type="submit" th:value="Submit">Search</button>
+        </div>
+    </form>
+    <br> <br>
+    <br>
+    <br>
+</main>
+</body>
+</html>

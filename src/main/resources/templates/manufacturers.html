@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all manufacturers that build our balloons</title>
+    <div th:if="${#request.getRemoteUser()!=null}">
+        Hi, <span><th:block th:text="${#request.getRemoteUser()}"/></span>
+        <a href="/logout">Logout</a>
+    </div>
+    <div th:if="${#request.getRemoteUser()==null}">
+        <a href="/login">Login</a>
+    </div>
+</head>
+<body>
+    <h1>List of all manufacturers:</h1>
+    <br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="manufacturer: ${manufacturers}">
+                <td>
+                    <th:block th:text="${manufacturer.getName()}"/>
+                </td>
+                <td>
+                    <th:block th:text="${manufacturer.getAddress()}"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/balloons">Back to balloons list</a>
+</body>
+</html>

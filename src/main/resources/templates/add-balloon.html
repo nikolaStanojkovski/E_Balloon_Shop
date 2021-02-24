@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add / Edit Balloon page</title>
+</head>
+<body>
+    <h2>Add or edit the balloon</h2>
+    <form th:method="POST" th:action="@{'/balloons/add'}">
+        <div>
+            <label for="name">Balloon name</label>
+            <input type="text"
+                   id="name"
+                   name="name"
+                   th:value="(${balloonToEdit} != null ? ${balloonToEdit.getName()} : '')"
+                   required
+                   placeholder="Enter balloon name">
+        </div>
+        <br>
+        <div>
+            <label for="description">Balloon description</label>
+            <input type="text"
+                   id="description"
+                   name="description"
+                   th:value="(${balloonToEdit} != null ? ${balloonToEdit.getDescription()} : '')"
+                   required
+                   placeholder="Enter balloon description">
+        </div>
+        <br>
+        <div>
+            <label for="manufacturer">Balloon manufacturer</label>
+            <select name="manufacturer" id="manufacturer">
+                <option th:if="${balloonToEdit} != null"
+                        th:each="manufacturer : ${manufacturerList}"
+                        th:value="${manufacturer.getId()}"
+                        th:selected="${balloonToEdit.getManufacturer() != null &&
+                                balloonToEdit.getManufacturer().getId() == manufacturer.getId()}"
+                        th:text="${manufacturer.getName()}">
+                </option>
+                <option th:if="${balloonToEdit} == null"
+                        th:each="manufacturer : ${manufacturerList}"
+                        th:value="${manufacturer.getId()}"
+                        th:text="${manufacturer.getName()}">
+                </option>
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="type">Balloon type</label>
+            <select name="type" id="type">
+                <option th:if="${balloonToEdit} != null"
+                        th:each="t : ${type}"
+                        th:value="${t.toString()}"
+                        th:selected="${balloonToEdit.getType() != null &&
+                                balloonToEdit.getType().toString().equals(t.toString())}"
+                        th:text="${t.toString()}">
+                </option>
+                <option th:if="${balloonToEdit} == null"
+                        th:each="t : ${type}"
+                        th:value="${t.toString()}"
+                        th:text="${t.toString()}">
+                </option>
+            </select>
+        </div>
+        <br>
+        <div hidden="hidden">
+            <input type="text" id="id" name="id" th:value="(${balloonToEdit} != null ? ${balloonToEdit.getId()} : '')">
+        </div>
+        <div>
+            <button name="submit" type="submit" th:value="Submit">Add / Edit</button>
+        </div>
+    </form>
+    <br>
+    <a href="/balloons">Back to list</a>
+</body>
+</html>

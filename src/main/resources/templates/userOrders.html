@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Orders</title>
+</head>
+<body>
+
+    <h2>Orders for the user: <th:block th:text="${#request.getRemoteUser()}" /> from the shopping cart that was created on: <th:block th:text="${shoppingCart.getDateCreated()}"/> </h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Balloon color</th>
+                <th>Balloon size</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order: ${shoppingCart.getOrders()}">
+                <td><th:block th:text="${order.getBalloonColor()}" /></td>
+                <td><th:block th:text="${order.getBalloonSize()}" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div>
+        <a href="/logout">Log out</a>
+    </div><br>
+
+    <div>
+        <a href="/balloons">New Order</a>
+    </div><br> <br>
+
+</body>
+</html>
