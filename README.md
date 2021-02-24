@@ -1,5 +1,7 @@
-#Online Balloon Shop
-##Made by Nikola Stanojkovski
+# Online Balloon Shop
+-----------------------------------------------------------------------------------
+## Made by Nikola Stanojkovski
+-----------------------------------------------------------------------------------
 
 An online balloon shop application for buying a new balloon and listing out the orders available in the appropriate shopping cart. 
 
